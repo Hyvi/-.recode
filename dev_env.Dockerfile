@@ -19,7 +19,7 @@ RUN set -euo pipefail \
 
 # Install OhMyZSH and some plugins
 RUN set -euo pipefail \
-  && sh -c "$(curl --fail --silent --show-error --location https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+  # && sh -c "$(curl --fail --silent --show-error --location https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
   && git clone --quiet https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
   && git clone --quiet https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
@@ -28,4 +28,19 @@ RUN set -euo pipefail \
   && sudo usermod --shell $(which zsh) recode
 
 # Add all dotfiles to home folder
-COPY --chown=recode:recode ./dotfiles/.* $HOME/
+# COPY --chown=recode:recode ./dotfiles/.* $HOME/
+
+
+RUN git clone \
+   --separate-git-dir=$HOME/dotfiles \
+   https://github.com/Hyvi/dotfiles.git \
+   dotfiles-tmp
+
+RUN rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/
+
+RUN rm -rf dotfiles-tmp \
+  && sh install.sh
+
+
+
+
