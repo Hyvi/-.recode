@@ -39,7 +39,8 @@ RUN git clone \
 RUN rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/
 
 RUN rm -rf dotfiles-tmp
-RUN chmod a+x $HOME/install.sh \
+
+RUN set -euo pipefail \
   && sh $HOME/install.sh
 
 
