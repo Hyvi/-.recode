@@ -31,18 +31,9 @@ RUN set -euo pipefail \
 # COPY --chown=recode:recode ./dotfiles/.* $HOME/
 
 
-RUN git clone \
-   --separate-git-dir=$HOME/dotfiles \
-   https://github.com/Hyvi/dotfiles.git \
-   dotfiles-tmp
-
-RUN rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/
-
-RUN rm -rf dotfiles-tmp
-
 RUN set -euo pipefail \
-  && sh $HOME/install.sh
-
-
-
+   && git clone --separate-git-dir=$HOME/dotfiles https://github.com/Hyvi/dotfiles.git  dotfiles-tmp \
+   && rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/ \
+   && rm -rf dotfiles-tmp \
+   && sh $HOME/install.sh
 
