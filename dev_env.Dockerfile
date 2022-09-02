@@ -14,7 +14,7 @@ ENV LC_ALL=en_US.UTF-8
 # Install Zsh
 RUN set -euo pipefail \
   && sudo apt-get --assume-yes --quiet --quiet update \
-  && sudo apt-get --assume-yes --quiet --quiet install zsh \
+  && sudo apt-get --assume-yes --quiet --quiet install zsh rsync\
   && sudo rm --recursive --force /var/lib/apt/lists/*
 
 # Install OhMyZSH and some plugins
