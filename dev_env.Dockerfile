@@ -32,7 +32,7 @@ RUN set -euo pipefail \
   && curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - \
   && sudo apt-get install -y nodejs \
   && curl --compressed -o- -L https://yarnpkg.com/install.sh | bash \
-  && yarn global add diagnostic-languageserver
+  && $HOME/.yarn/bin/yarn global add diagnostic-languageserver
 
 
 RUN set -euo pipefail \
