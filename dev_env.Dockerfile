@@ -27,13 +27,17 @@ RUN set -euo pipefail \
 RUN set -euo pipefail \
   && sudo usermod --shell $(which zsh) recode
 
-# Add all dotfiles to home folder
-# COPY --chown=recode:recode ./dotfiles/.* $HOME/
+# 安装 错误检测， 比如 golangci-linter
+RUN set -euo pipefail \
+  && curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - \
+  && sudo apt-get install -y nodejs \
+  && curl --compressed -o- -L https://yarnpkg.com/install.sh | bash \
+  && yarn global add diagnostic-languageserver
 
 
 RUN set -euo pipefail \
-   && git clone --separate-git-dir=$HOME/dotfiles https://github.com/Hyvi/dotfiles.git  dotfiles-tmp \
-   && rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/ \
-   && rm -rf dotfiles-tmp \
-   && sh $HOME/install.sh
+  && git clone --separate-git-dir=$HOME/dotfiles https://github.com/Hyvi/dotfiles.git  dotfiles-tmp \
+  && rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/ \
+  && rm -rf dotfiles-tmp \
+  && sh $HOME/install.sh
 
